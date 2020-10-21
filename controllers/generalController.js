@@ -15,10 +15,14 @@ const Assign  = require('../models/assign');
  */
 exports.getDashboard = async (req, res, next) => {
     try {
+        const desktopInfo = await Desktop.findAll();
+
         res.render('dashboard', {
             errorMessage: null,
             hasError: false,
             validationErrors: [],
+            startHours: 8,
+            desktopInfo
         });
         
     } catch (error) {

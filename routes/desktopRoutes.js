@@ -16,9 +16,9 @@ const desktopController = require('../controllers/desktopController')
 /**
  * Handling desktop's creation
  * 
- * @name postLogin POST
+ * @name addDesktop POST
  * @function
- * @memberof module:routers/auth
+ * @memberof module:routers/desktop
  * @param {string} '/dashboard/desktop/add' - uri
  * @param {function} desktopController.addDesktop
  */
@@ -31,6 +31,38 @@ router.post(
     ],
     desktopController.addDesktop
 );
+
+
+/**
+ * Handling desktop's edition
+ * 
+ * @name editDesktop POST
+ * @function
+ * @memberof module:routers/desktop
+ * @param {string} '/dashboard/desktop/edit' - uri
+ * @param {function} desktopController.editDesktop
+ */
+router.post(
+    '/desktop/edit',
+    [
+        body('name', 'Obligatoire : Nom du poste')
+            .not()
+            .isEmpty(),
+    ],
+    desktopController.editDesktop
+);
+
+
+/**
+ * Handling desktop's delete
+ * 
+ * @name deleteDesktop POST
+ * @function
+ * @memberof module:routers/desktop
+ * @param {string} '/dashboard/desktop/delete' - uri
+ * @param {function} desktopController.deleteDesktop
+ */
+router.post('/desktop/delete', desktopController.deleteDesktop);
 
 
 module.exports = router;
