@@ -26,6 +26,7 @@ const authRoutes    = require('./routes/authRoutes');
 const clientRoutes  = require('./routes/clientRoutes');
 const desktopRoutes = require('./routes/desktopRoutes');
 const assignRoutes  = require('./routes/assignRoutes');
+const generalRoutes = require('./routes/generalRoutes');
 
 // error handler
 const errorController = require('./controllers/errorController');
@@ -72,6 +73,7 @@ app.use((req, res, next) => {
 
 // Routes handler
 app.use(authRoutes);
+app.use(isAuth, generalRoutes);
 app.use('/dashboard', isAuth, clientRoutes);
 app.use('/dashboard', isAuth, desktopRoutes);
 app.use('/dashboard', isAuth, assignRoutes);
