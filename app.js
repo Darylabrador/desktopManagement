@@ -66,6 +66,9 @@ app.use((req, res, next) => {
 });
 
 
+// User info
+
+
 // Routes handler
 app.use(authRoutes);
 app.use('/dashboard', isAuth, clientRoutes);

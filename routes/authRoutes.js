@@ -10,6 +10,7 @@ const { body } = require('express-validator');
 
 const authController = require('../controllers/authController');
 
+
 /**
  * Get index page
  * @name getIndex GET
@@ -19,6 +20,7 @@ const authController = require('../controllers/authController');
  * @param {function} authController.getLogin
  */
 router.get('/', authController.getLogin);
+
 
 
 router.post(
@@ -33,6 +35,18 @@ router.post(
     ],
     authController.postLogin
 );
+
+
+
+/**
+ * Handle logout
+ * @name logout GET
+ * @function 
+ * @memberof module:routers/auth
+ * @param {string} '/logout' - uri
+ * @param {function} authController.logout
+ */
+router.get('/logout', authController.logout);
 
 
 module.exports = router;
