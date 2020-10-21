@@ -1,0 +1,30 @@
+{
+  "name": "gestionordinateur-nodejs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "sass": "sass --watch ./public/scss/base/style.scss:./public/css/style.css",
+    "compressed": "sass ./public/scss/base/style.scss:./public/css/style.css --style compressed",
+    "doc": "./node_modules/.bin/jsdoc -c ./js-doc-conf.json",
+    "test": "mocha --timeout 10000"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.6.1",
+    "http-errors": "~1.6.3",
+    "jsdoc": "^3.6.6",
+    "morgan": "~1.9.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5",
+    "validator": "^13.1.17"
+  }
+}
