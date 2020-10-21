@@ -15,7 +15,11 @@ const Assign  = require('../models/assign');
  */
 exports.getDashboard = async (req, res, next) => {
     try {
-        res.render('dashboard');
+        res.render('dashboard', {
+            errorMessage: null,
+            hasError: false,
+            validationErrors: [],
+        });
         
     } catch (error) {
         const err = new Error(error);
