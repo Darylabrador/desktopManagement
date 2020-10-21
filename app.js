@@ -55,13 +55,14 @@ app.use(
     })
 );
 
+
 app.use(flash());
 
 
 // Message flash
 app.use((req, res, next) => {
-    res.locals.successMessage = req.flash('success');
-    res.locals.errorMessage   = req.flash('error');
+    res.locals.success_message = req.flash('success');
+    res.locals.error_message   = req.flash('error');
     next();
 });
 

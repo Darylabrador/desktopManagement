@@ -3,7 +3,7 @@
  */
 
 // Model import
-const User = require('../models/desktop');
+const User = require('../models/user');
 
 // Package imports
 const { validationResult } = require('express-validator');
@@ -12,10 +12,12 @@ const bcrypt               = require('bcryptjs');
 
 /**
  * Get login page
+ * 
+ * @function getLogin
  * @returns index view or dashboard depending on session
  */
 exports.getLogin = (req, res, next) => {
-    if(!req.session.userId) {
+    if(req.session.userId) {
         return res.redirect('/dashboard');
     }
     res.render('index',{
@@ -29,8 +31,11 @@ exports.getLogin = (req, res, next) => {
 
 /**
  * Handle post login
+ * 
+ * @function postLogin
  * @param {String} mail
  * @param {String} password
+ * @throws Will throw an error if one error occursed
  */
 exports.postLogin = async (req, res, next) => {
     const { mail, password } = req.body;
@@ -38,15 +43,12 @@ exports.postLogin = async (req, res, next) => {
 
     // Handle input validation errors
     if(!errors.isEmpty()){
-        console.log(errors)
         return res.status(422).render('index', {
             hasError: true,
             errorMessage: errors.array()[0].msg,
             validationErrors: errors.array(),
-            oldInput: {
-                email: email
-            }
-        })
+            oldInput: { mail }
+        });
     }
 
     try {

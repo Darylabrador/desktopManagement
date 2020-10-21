@@ -5,9 +5,10 @@
 
 const router = require('express').Router();
 
-// Middleware import
+// Package import
 const { body } = require('express-validator');
 
+// Controller import
 const authController = require('../controllers/authController');
 
 
@@ -22,14 +23,22 @@ const authController = require('../controllers/authController');
 router.get('/', authController.getLogin);
 
 
-
+/**
+ * Handling user's connection
+ * 
+ * @name postLogin POST
+ * @function
+ * @memberof module:routers/auth
+ * @param {string} '/login' - uri
+ * @param {function} authController.postLogin
+ */
 router.post(
     '/login',
     [
-        body('name', 'Obligatoire : Prénom')
+        body('mail', 'Obligatoire : Prénom')
             .not()
             .isEmpty(),
-        body('surname', 'Obligatoire : Nom de famille')
+        body('password', 'Obligatoire : Nom de famille')
             .not()
             .isEmpty()
     ],
