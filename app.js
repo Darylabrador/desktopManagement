@@ -27,6 +27,9 @@ const clientRoutes  = require('./routes/clientRoutes');
 const desktopRoutes = require('./routes/desktopRoutes');
 const assignRoutes  = require('./routes/assignRoutes');
 
+// error handler
+const errorController = require('./controllers/errorController');
+
 const app = express();
 
 // view engine setup
@@ -65,10 +68,18 @@ app.use((req, res, next) => {
 
 // Routes handler
 app.use(authRoutes);
-app.use('/client', isAuth, clientRoutes);
-app.use('/desktop', isAuth, desktopRoutes);
-app.use('/assign', isAuth, assignRoutes);
+app.use('/dashboard', isAuth, clientRoutes);
+app.use('/dashboard', isAuth, desktopRoutes);
+app.use('/dashboard', isAuth, assignRoutes);
+app.use(errorController.get404);
 
+// general error handler (all except 404)
+app.use((error, req, res, next) => {
+    console.log(error)
+    res.status(error.httpStatusCode).render('error', {
+        statusCode: error.httpStatusCode
+    });
+});
 
 // Database initialisation
 var fakeAdminMail = "test@test.com";
