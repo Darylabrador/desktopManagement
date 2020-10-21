@@ -7,6 +7,7 @@ const session              = require('express-session');
 const flash                = require('connect-flash');
 const isAuth               = require('./middlewares/is-auth');
 const databaseConnection   = require('./config/database');
+const bcrypt               = require('bcryptjs');
 
 // Models imports
 const User    = require('./models/user');
@@ -15,11 +16,16 @@ const Desktop = require('./models/desktop');
 const Assign  = require('./models/assign');
 
 // implement relationship
-
-
+Client.hasMany(Assign);
+Desktop.hasMany(Assign);
+Assign.belongsTo(Client);
+Assign.belongsTo(Desktop);
 
 // Routes imports
-
+const authRoutes    = require('./routes/authRoutes');
+const clientRoutes  = require('./routes/clientRoutes');
+const desktopRoutes = require('./routes/desktopRoutes');
+const assignRoutes  = require('./routes/assignRoutes');
 
 const app = express();
 
@@ -48,16 +54,43 @@ app.use(
 
 app.use(flash());
 
+
+// Message flash
+app.use((req, res, next) => {
+    res.locals.successMessage = req.flash('success');
+    res.locals.errorMessage   = req.flash('error');
+    next();
+});
+
+
 // Routes handler
+app.use(authRoutes);
+app.use('/client', isAuth, clientRoutes);
+app.use('/desktop', isAuth, desktopRoutes);
+app.use('/assign', isAuth, assignRoutes);
 
 
 // Database initialisation
+var fakeAdminMail = "test@test.com";
+
 databaseConnection
     // .sync({ force: true })
     .sync()
-    .then(result => {
-        console.log('database connection is ok');
-    }).catch(err => {
+    .then(() => {
+        return User.findOne({ where: { mail: fakeAdminMail }});
+    })
+    .then((user) => {
+        if(!user) {
+            bcrypt.hash('adminpassword', 12).then(hashedPwd => {
+                const fakeAdmin = new User({
+                    mail: fakeAdminMail,
+                    password: hashedPwd
+                });
+                fakeAdmin.save();
+            });
+        }
+    })
+    .catch(err => {
         console.log('an error occursed', err);
     });
 

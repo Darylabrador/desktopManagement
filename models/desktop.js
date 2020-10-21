@@ -16,6 +16,7 @@ const Desktop = sequelize.define('desktop', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     }
 }, { timestamps: false });
 
