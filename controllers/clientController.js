@@ -35,6 +35,10 @@ exports.clientInfo = async (req, res, next) => {
         });
     } catch (error) {
         console.log(error)
+        res.status(200).json({
+            'message': 'Une erreur est survenue',
+            'success': false
+        })
     }
 }
 
@@ -58,7 +62,7 @@ exports.createClient = async (req, res, next) => {
     try {
         const nameToLowerCase = name.toLowerCase();
         const surnameToLowerCase = surname.toLowerCase();
-        
+
         const newUser = new Client({
             name: nameToLowerCase, 
             surname: surnameToLowerCase
@@ -69,7 +73,6 @@ exports.createClient = async (req, res, next) => {
             'success' : true
         })
     } catch (error) {
-        console.log(error)
         res.status(200).json({
             'message': 'Une erreur est survenue',
             'success': false

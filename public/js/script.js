@@ -138,7 +138,6 @@ if(btnAddClient) {
                     if (request.status === 200) {
                         let reponse = request.response;
                         let messageAdd = document.getElementById('messageAdd');
-
                         $('#modalAddAssign').modal('toggle');
                         $('#modalAddClient').modal('toggle');
                         addClientForm.reset();
@@ -162,8 +161,6 @@ if(btnAddClient) {
                                 </div>
                             `;
                         }
-                        
-                        console.log(reponse);
                     } else {
                         $('#modalAddClient').modal('toggle');
                         bootbox.alert({

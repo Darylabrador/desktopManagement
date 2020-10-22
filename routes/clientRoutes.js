@@ -25,11 +25,11 @@ router.post('/client', clientController.clientInfo);
 
 /**
  * Get personne for autocomplete
- * @name clientInfo POST
+ * @name createClient POST
  * @function 
  * @memberof module:routers/client
  * @param {string} '/dashboard/client/add' - uri
- * @param {function}  clientController.getClientInfo
+ * @param {function}  clientController.createClient
  */
 router.post(
     '/client/add', 
