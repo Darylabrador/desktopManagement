@@ -51,8 +51,8 @@ if (btnAddAssign.length != 0) {
     btnAddAssign.forEach(btn => {
         btn.addEventListener('click', evt => {
             $('#modalAddAssign').modal('toggle');
-            document.getElementById('assignHourAdd').value    = "";
-            document.getElementById('assignDesktopAdd').value = "";
+            document.getElementById('assignHourAdd').value    = evt.currentTarget.getAttribute('data-hours');
+            document.getElementById('assignDesktopAdd').value = evt.currentTarget.getAttribute('data-desktopId');
         })
     })
 }
@@ -65,10 +65,7 @@ if (btnDeleteAssign.length != 0) {
     btnDeleteAssign.forEach(btn => {
         btn.addEventListener('click', evt => {
             $('#modalDeleteAssign').modal('toggle');
-            document.getElementById('assignDateDelete').value    = "";
-            document.getElementById('assignHourDelete').value    = "";
-            document.getElementById('assignClientDelete').value  = "";
-            document.getElementById('assignDesktopDelete').value = "";
+            document.getElementById('idAssignDelete').value = evt.currentTarget.getAttribute('data-idAssign');
         })
     })
 }
@@ -200,3 +197,8 @@ if(btnAddClient) {
         })
     })
 }
+
+
+// Current date on datepicker
+let today = new Date().toISOString().substr(0, 10);
+document.getElementById('date').value = today;

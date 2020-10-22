@@ -51,6 +51,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
+            sameSite: true,
             maxAge: 1000 * 3600 * 5 // 5 hours
         }
     })
@@ -58,7 +59,6 @@ app.use(
 
 
 app.use(flash());
-
 
 // Message flash
 app.use((req, res, next) => {

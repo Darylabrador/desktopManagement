@@ -1,0 +1,22 @@
+<!-- client actions modal -->
+<div class="modal fade" id="modalAddClient" tabindex="-1" role="dialog" aria-labelledby="modalAddAssignLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="modalAddAssignLabel"> Ajouter une personne </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addClientForm" class="modal-body">
+                <input required id="surname" type="text" class="form-control my-1" placeholder="Nom">
+                <input required id="name" type="text" class="form-control my-1" placeholder="Prénom">
+                <div class="mt-4 w-100 d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
+                    <button type="submit" class="btn btn-primary mx-1"> Ajouter </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<!-- Assign action modal -->
+<div class="modal fade" id="modalAddAssign" tabindex="-1" role="dialog" aria-labelledby="modalAddAssignLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="modalAddAssignLabel"> Attribuer </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div id="messageAdd"></div>
+
+            <form class="modal-body" method="POST" action="/dashboard/assign/add">
+                <input type="hidden" name="hours" id="assignHourAdd">
+                <input type="hidden" name="desktopId" id="assignDesktopAdd">
+
+                <div class="d-flex">
+                    <input type="text" name="client" class="form-control ui-widget" id="clientSearch" placeholder="Rechercher : Nom prénom">
+                    <button id="btnAddClient" class="btn border-0 outline-0 mx-0 px-1" type="button" disabled>
+                        <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 25px !important;"></span>
+                    </button>
+                </div>
+
+                <div class="mt-4 w-100 d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
+                    <button type="submit" class="btn btn-primary mx-1"> Attribuer </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDeleteAssign" tabindex="-1" role="dialog" aria-labelledby="modalEditAssignLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <h5 class="text-center"> Êtes-vous sûr de vouloir annuler ce créneau ? </h5>
+
+            <form class="modal-body" method="POST" action="/dashboard/assign/delete">
+                <input type="hidden" name="idAssign" id="idAssignDelete">
+                <div class="mt-4 w-100 d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary mx-1" data-dismiss="modal"> Non </button>
+                    <button type="submit" class="btn btn-danger mx-1"> Oui </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

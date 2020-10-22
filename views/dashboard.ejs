@@ -80,10 +80,10 @@
 
                             <td class="pl-3 w-100">  </td>
                             <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center"> 
-                                <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-userId="" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
                                     <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
                                 </button>
-                                <button class="btn border-0 outline-0 mx-0 px-1 btnDeleteAssign" data-userId="" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnDeleteAssign" data-idAssign="">
                                     <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 18px !important;"></span>
                                 </button>
                             </td>
@@ -97,149 +97,12 @@
         <% }) %>
     </div>
 
-    <!-- desktop action modal -->
-    <div class="modal fade" id="modalAddDesktop" tabindex="-1" role="dialog" aria-labelledby="modalAddDesktopLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold" id="modalAddDesktopLabel"> Ajouter un poste </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="modal-body" method="POST" action="/dashboard/desktop/add">
-                    <input required name="name" type="text" class="form-control" placeholder="Nom du poste">
-                    <div class="mt-4 w-100 d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
-                        <button type="submit" class="btn btn-primary mx-1"> Ajouter </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade" id="modalEditDesktop" tabindex="-1" role="dialog" aria-labelledby="modalEditDesktopLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold" id="modalEditDesktopLabel"> </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form class="modal-body" method="POST" action="/dashboard/desktop/edit">
-                    <input type="hidden" name="idDesktop" class="form-control" id="desktopEditId">
-                    <input required name="name" type="text" class="form-control" id="desktopNameEdit">
-                    <div class="mt-4 w-100 d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
-                        <button type="submit" class="btn btn-primary mx-1"> Modifier </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <% include includes/modalDesktop %>
 
-    <div class="modal fade" id="modalDeleteDesktop" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <h5 class="text-center"> Êtes-vous sûr de vouloir supprimer ? </h5>
-                <form class="modal-body" method="POST" action="/dashboard/desktop/delete">
-                    <input type="hidden" name="idDesktop" id="desktopDeleteId">
-                    <div class="mt-4 w-100 d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Non</button>
-                        <button type="submit" class="btn btn-danger mx-1"> Oui </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <% include includes/modalClient %>
 
-    <!-- client actions modal -->
-    <div class="modal fade" id="modalAddClient" tabindex="-1" role="dialog" aria-labelledby="modalAddAssignLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold" id="modalAddAssignLabel"> Ajouter une personne </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="addClientForm" class="modal-body">
-                    <input required id="surname" type="text" class="form-control my-1" placeholder="Nom">
-                    <input required id="name" type="text" class="form-control my-1" placeholder="Prénom">
-                    <div class="mt-4 w-100 d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
-                        <button type="submit" class="btn btn-primary mx-1"> Ajouter </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Assign action modal -->
-    <div class="modal fade" id="modalAddAssign" tabindex="-1" role="dialog" aria-labelledby="modalAddAssignLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold" id="modalAddAssignLabel"> Attribuer </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div id="messageAdd"></div>
-
-                <form class="modal-body" method="POST" action="/dashboard/assign/add">
-                    <input type="hidden" name="hours" id="assignHourAdd">
-                    <input type="hidden" name="desktopId" id="assignDesktopAdd">
-
-                    <div class="d-flex">
-                        <input type="text" name="client" class="form-control ui-widget" id="clientSearch" placeholder="Rechercher : Nom prénom">
-                        <button id="btnAddClient" class="btn border-0 outline-0 mx-0 px-1" type="button" disabled>
-                            <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 25px !important;"></span>
-                        </button>
-                    </div>
-
-                    <div class="mt-4 w-100 d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
-                        <button type="submit" class="btn btn-primary mx-1"> Attribuer </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalDeleteAssign" tabindex="-1" role="dialog" aria-labelledby="modalEditAssignLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <h5 class="text-center"> Êtes-vous sûr de vouloir annuler ce créneau ? </h5>
-
-                <form class="modal-body" method="POST" action="/dashboard/assign/delete">
-                    <input type="hidden" name="date" id="assignDateDelete">
-                    <input type="hidden" name="hours" id="assignHourDelete">
-                    <input type="hidden" name="clientId" id="assignClientDelete">
-                    <input type="hidden" name="desktopId" id="assignDesktopDelete">
-                    <div class="mt-4 w-100 d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary mx-1" data-dismiss="modal"> Non </button>
-                        <button type="submit" class="btn btn-danger mx-1"> Oui </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <% include includes/modalAssign %>
 
     <script src="/js/script.js"></script>
 </body>

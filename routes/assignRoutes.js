@@ -31,20 +31,14 @@ router.post(
 
 
 /**
- * Handling assign's edit
+ * Handling assign's delete (cancel)
  * @name deleteAssign POST
  * @function 
  * @memberof module:routers/assign
  * @param {string} '/dashboard/assign/delete' - uri
  * @param {function} assignController.deleteAssign
  */
-router.post(
-    '/assign/delete',
-    [
-
-    ],
-    assignController.deleteAssign
-);
+router.post( '/assign/delete', assignController.deleteAssign);
 
 
 module.exports = router;
