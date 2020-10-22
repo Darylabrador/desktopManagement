@@ -48,14 +48,16 @@
             <div class="col-3 mx-3 border border-dark">
 
                 <div class="py-2 border-bottom border-dark d-flex justify-content-between align-items-center">
-                    <h6 class="font-weight-bold text-center ml-4"><%= desktop.name %></h6>
-                    <form action="/dashboard/desktop/delete" method="POST">
-                        <input type="hidden" name="idDesktop" value="<%=desktop.id%>">
-                        <button type="submit" class="btn bg-transparent outline-0 border-0 p-0 my-0 ml-0 mr-4">
+                    <h6 class="font-weight-bold text-center ml-4 desktopName"><%= desktop.name %></h6>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn border-0 outline-0 mx-0 px-1 btnEditDesktop mx-1" data-desktopId="<%=desktop.id%>">
+                            <span class="iconify" data-inline="false" data-icon="clarity:edit-solid" style="font-size: 18px !important; margin-top: -8px !important;"></span>
+                        </button>
+                        <button type="button" class="btn bg-transparent outline-0 border-0 p-0 my-0 ml-0 mr-4 btnDeleteDesktop mx-1" data-desktopId="<%=desktop.id%>">
                             <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 20px !important; margin-top: -10px !important;"></span>
                         </button>
-                    </form>
-                    
+                    </div>
+
                 </div>
 
                 <table class="table table-sm py-0 my-0">
@@ -63,15 +65,17 @@
                     <tr class="py-0 my-0">
                         <td class="pl-3" style="width: 15% !important; border-right: 1px solid black;"> <%= startHours + i %>h </td>
                         <div class="d-flex justify-content-between w-100">
-                            <td class="pl-3 w-100">  Créneau disponible </td>
+
+                            <td class="pl-3 w-100">  </td>
                             <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center"> 
-                                <button class="btn border-0 outline-0 mx-0 px-1" data-toggle="modal" data-target="#modalEditAssign">
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnEdit" data-toggle="modal" data-target="#modalEditAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
                                     <span class="iconify" data-inline="false" data-icon="clarity:edit-solid" style="font-size: 18px !important;"></span>
                                 </button>
-                                <button class="btn border-0 outline-0 mx-0 px-1" data-toggle="modal" data-target="#modalAddAssign">
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnAssign" data-toggle="modal" data-target="#modalAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
                                     <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
                                 </button>
                             </td>
+
                         </div>
                     </tr>
                 <% } %>
@@ -81,6 +85,7 @@
         <% }) %>
     </div>
 
+    <!-- desktop action modal -->
     <div class="modal fade" id="modalAddDesktop" tabindex="-1" role="dialog" aria-labelledby="modalAddDesktopLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -100,5 +105,52 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalEditDesktop" tabindex="-1" role="dialog" aria-labelledby="modalEditDesktopLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="modalEditDesktopLabel"> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="modal-body" method="POST" action="/dashboard/desktop/edit">
+                    <input type="hidden" name="idDesktop" class="form-control" id="desktopEditId">
+                    <input required name="name" type="text" class="form-control" id="desktopNameEdit">
+                    <div class="mt-4 w-100 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
+                        <button type="submit" class="btn btn-primary mx-1"> Modifier </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDeleteDesktop" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <h5 class="text-center"> Êtes-vous sûr de vouloir supprimer ? </h5>
+                <form class="modal-body" method="POST" action="/dashboard/desktop/delete">
+                    <input type="hidden" name="idDesktop" id="desktopDeleteId">
+                    <div class="mt-4 w-100 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Non</button>
+                        <button type="submit" class="btn btn-danger mx-1"> Oui </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- assignment actions modal -->
+
+
+    <script src="/js/script.js"></script>
 </body>
 </html>
