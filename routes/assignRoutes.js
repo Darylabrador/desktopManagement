@@ -22,7 +22,9 @@ const assignController = require('../controllers/assignController')
 router.post(
     '/assign/add',
     [
-
+        body('client', 'Obligatoire : identité client')
+            .not()
+            .isEmpty()
     ],
     assignController.addAssign
 );

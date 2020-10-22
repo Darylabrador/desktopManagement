@@ -1,6 +1,21 @@
 let method = "POST";
 let request = new XMLHttpRequest();
 
+// function
+var substringMatcher = function (strs) {
+    return function findMatches(q, cb) {
+        var matches, substringRegex;
+        matches = [];
+        substrRegex = new RegExp(q, 'i');
+        $.each(strs, function (i, str) {
+            if (substrRegex.test(str))
+                matches.push(str);
+        })
+        cb(matches);
+    }
+}
+
+
 // edit desktop
 let btnEditDesktop = document.querySelectorAll('.btnEditDesktop');
 let desktopName = document.querySelectorAll('.desktopName');
@@ -36,7 +51,6 @@ if (btnAddAssign.length != 0) {
     btnAddAssign.forEach(btn => {
         btn.addEventListener('click', evt => {
             $('#modalAddAssign').modal('toggle');
-            document.getElementById('assignDateAdd').value    = "";
             document.getElementById('assignHourAdd').value    = "";
             document.getElementById('assignDesktopAdd').value = "";
         })
@@ -84,16 +98,21 @@ clientSearch.addEventListener('keyup', evt => {
         request.onload = () => {
             if(request.readyState === XMLHttpRequest.DONE) {
                 if(request.status === 200) {
-                    let reponse = request.response;
-                    console.log(reponse);
-                    
-                    $("#clientSearch").autocomplete({
-                        source: reponse.userList
-                    });
+                    let reponse   = request.response;
+                    let arrayData = [];
 
                     if(reponse.userList.length == 0) {
                         btnToAddClient.removeAttribute('disabled');
                     }
+
+                    for (let j = 0; j < reponse.userList.length; j++ ) {
+                        arrayData.push(`${reponse.userList[j].id} - ${reponse.userList[j].surname} ${reponse.userList[j].name}`)
+                    }
+
+                    $('#clientSearch').autocomplete({
+                        autoFocus: true,
+                        source: arrayData
+                    });
                 }else{
                     $('#modalAddAssign').modal('toggle');
                     bootbox.alert({
@@ -109,7 +128,9 @@ clientSearch.addEventListener('keyup', evt => {
                 });
             }
         }
-    } 
+    } else {
+        btnToAddClient.setAttribute('disabled', 'disabled');
+    }
 });
 
 

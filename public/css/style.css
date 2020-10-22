@@ -1,8 +1,9 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.ui-widget {
+    position: relative !important;
+    z-index: 4000 !important;
 }
 
-a {
-  color: #00B7FF;
+.ui-autocomplete {
+    position: relative !important;
+    width: 400px !important;
 }
