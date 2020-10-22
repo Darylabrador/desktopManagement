@@ -35,10 +35,10 @@ router.get('/', authController.getLogin);
 router.post(
     '/login',
     [
-        body('mail', 'Obligatoire : Prénom')
+        body('mail', 'Obligatoire : adresse email')
             .not()
             .isEmpty(),
-        body('password', 'Obligatoire : Nom de famille')
+        body('password', 'Obligatoire : mot de passe')
             .not()
             .isEmpty()
     ],

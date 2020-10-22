@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <title>Gestion ordinateurs | Dashboard</title>
 </head>
 <body>
@@ -25,6 +26,15 @@
         </div>
     </nav>
 
+    <!-- datepicker -->
+    <div class="mt-4 ml-3 col-3">
+        <form action="#" class="d-flex">
+            <input type="date" name="date" id="date" class="form-control">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
+
+    <!-- pagination button -->
     <div class="mt-4 ml-4">
         <button class="btn btn-outline-primary mx-2"> 
             <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous" style="font-size: 25px !important;"></span> 
@@ -68,11 +78,11 @@
 
                             <td class="pl-3 w-100">  </td>
                             <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center"> 
-                                <button class="btn border-0 outline-0 mx-0 px-1 btnEdit" data-toggle="modal" data-target="#modalEditAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
-                                    <span class="iconify" data-inline="false" data-icon="clarity:edit-solid" style="font-size: 18px !important;"></span>
-                                </button>
-                                <button class="btn border-0 outline-0 mx-0 px-1 btnAssign" data-toggle="modal" data-target="#modalAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-userId="" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
                                     <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
+                                </button>
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnDeleteAssign" data-userId="" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                    <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 18px !important;"></span>
                                 </button>
                             </td>
 
@@ -148,8 +158,87 @@
         </div>
     </div>
 
-    <!-- assignment actions modal -->
+    <!-- client actions modal -->
+    <div class="modal fade" id="modalAddClient" tabindex="-1" role="dialog" aria-labelledby="modalAddAssignLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="modalAddAssignLabel"> Ajouter une personne </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="addClientForm" class="modal-body">
+                    <input required id="surname" type="text" class="form-control my-1" placeholder="Nom">
+                    <input required id="name" type="text" class="form-control my-1" placeholder="Prénom">
+                    <div class="mt-4 w-100 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
+                        <button type="submit" class="btn btn-primary mx-1"> Ajouter </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- Assign action modal -->
+    <div class="modal fade" id="modalAddAssign" tabindex="-1" role="dialog" aria-labelledby="modalAddAssignLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold" id="modalAddAssignLabel"> Attribuer </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div id="messageAdd"></div>
+
+                <form class="modal-body" method="POST" action="/dashboard/assign/add">
+                    <input type="hidden" name="date" id="assignDateAdd">
+                    <input type="hidden" name="hours" id="assignHourAdd">
+                    <input type="hidden" name="desktopId" id="assignDesktopAdd">
+
+                    <div class="d-flex">
+                        <input type="text" name="client" class="form-control" id="clientSearch" placeholder="Rechercher : Nom prénom">
+                        <button id="btnAddClient" class="btn border-0 outline-0 mx-0 px-1" type="button" disabled>
+                            <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 25px !important;"></span>
+                        </button>
+                    </div>
+
+                    <div class="mt-4 w-100 d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
+                        <button type="submit" class="btn btn-primary mx-1"> Attribuer </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDeleteAssign" tabindex="-1" role="dialog" aria-labelledby="modalEditAssignLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <h5 class="text-center"> Êtes-vous sûr de vouloir annuler ce créneau ? </h5>
+
+                <form class="modal-body" method="POST" action="/dashboard/assign/delete">
+                    <input type="hidden" name="date" id="assignDateDelete">
+                    <input type="hidden" name="hours" id="assignHourDelete">
+                    <input type="hidden" name="clientId" id="assignClientDelete">
+                    <input type="hidden" name="desktopId" id="assignDesktopDelete">
+                    <div class="mt-4 w-100 d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary mx-1" data-dismiss="modal"> Non </button>
+                        <button type="submit" class="btn btn-danger mx-1"> Oui </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="/js/script.js"></script>
 </body>

@@ -68,9 +68,6 @@ app.use((req, res, next) => {
 });
 
 
-// User info
-
-
 // Routes handler
 app.use(authRoutes);
 app.use(isAuth, generalRoutes);

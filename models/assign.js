@@ -14,7 +14,7 @@ const Assign = sequelize.define('assign', {
         primaryKey: true
     },
     date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
     },
     hours: {
