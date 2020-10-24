@@ -1,148 +1,97 @@
-        <% include includes/head %>
-        <script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/css/style.css">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand rounded px-3" href="/dashboard" style="background: #C4C4C4 !important;">Gestion ordinateur</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarMenu">
-                <div class="navbar-nav w-100 justify-content-end">
-                    <a class="nav-link bg-dark text-center" href="/logout" style="border-radius: 10px !important"> 
-                        <span class="iconify" data-inline="false" data-icon="gg:log-off" style="color: white !important; font-size: 25px !important;"></span> 
-                    </a>
+
+    <!-- pagination button -->
+    <div class="mt-4 ml-4">
+    
+
+        <% if(totalItem != 0) { %>
+            <% if(hasPreviousPage) { %>
+            <a href="?page=<%= previousPage %>" class="btn btn-outline-primary mx-2"> 
+                <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous" style="font-size: 25px !important;"></span> 
+            </a>
+            <% } %>
+    
+            <% if(hasNextPage) { %>
+            <a href="?page=<%= nextPage %>" class="btn btn-outline-primary mx-2">
+                <span class="iconify" data-inline="false" data-icon="grommet-icons:form-next" style="font-size: 25px !important;"></span>
+            </a>
+            <% } %>
+        <% } %>
+
+        <button class="btn border-0 outline-0 mx-2" data-toggle="modal" data-target="#modalAddDesktop">
+            <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outlined" style="color: #056124 !important; font-size: 35px !important;"></span>
+        </button>
+    </div>
+
+<div class="container-fluid row no-gutters justify-content-center">
+
+    <% desktopInfo.forEach(desktop => { %>
+        <div class="col-3 mx-3 border border-dark my-2">
+            <div class="py-2 border-bottom border-dark d-flex justify-content-between align-items-center">
+                <h6 class="font-weight-bold text-center ml-4 desktopName"><%= desktop.name %></h6>
+                <div class="d-flex justify-content-between">
+                    <button class="btn border-0 outline-0 mx-0 px-1 btnEditDesktop mx-1" data-desktopId="<%=desktop.id%>">
+                        <span class="iconify" data-inline="false" data-icon="clarity:edit-solid" style="font-size: 18px !important; margin-top: -8px !important;"></span>
+                    </button>
+                    <button type="button" class="btn bg-transparent outline-0 border-0 p-0 my-0 ml-0 mr-4 btnDeleteDesktop mx-1" data-desktopId="<%=desktop.id%>">
+                        <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 20px !important; margin-top: -10px !important;"></span>
+                    </button>
                 </div>
             </div>
-        </nav>
 
-        <!-- datepicker -->
-        <div class="mt-4 ml-3 col-3">
-            <form id="searchDateForm" action="/dashboard" method="POST" class="d-flex">
-                <input type="date" name="date" id="date" class="form-control" value="<%=date%>">
-                <button type="submit" class="btn btn-primary">Rechercher</button>
-            </form>
-        </div>
+            <table class="table table-sm py-0 my-0">
+            <% for(let i = 0; i < 10; i++ ) { %>
+            <tr class="py-0 my-0">
+                <td class="pl-3" style="width: 15% !important; border-right: 1px solid black;"> <%= startHours + i %>h </td>
+                <% if(assignInfo.length == 0) { %>
+                <div class="d-flex justify-content-between w-100">
+                    <td class="pl-3 w-100"></td>
+                    <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center">
+                        <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                            <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
+                        </button>
+                    </td>
+                </div>
+                <% } else { %>
 
-        <!-- pagination button -->
-        <div class="mt-4 ml-4">
-            <div id="paginationContent"></div>
-
-            <% if(totalItem != 0) { %>
-                <% if(hasPreviousPage) { %>
-                <a href="?page=<%= previousPage %>" class="btn btn-outline-primary mx-2"> 
-                    <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous" style="font-size: 25px !important;"></span> 
-                </a>
-                <% } %>
-        
-                <% if(hasNextPage) { %>
-                <a href="?page=<%= nextPage %>" class="btn btn-outline-primary mx-2">
-                    <span class="iconify" data-inline="false" data-icon="grommet-icons:form-next" style="font-size: 25px !important;"></span>
-                </a>
-                <% } %>
-            <% } %>
-
-            <button class="btn border-0 outline-0 mx-2" data-toggle="modal" data-target="#modalAddDesktop">
-                <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outlined" style="color: #056124 !important; font-size: 35px !important;"></span>
-            </button>
-        </div>
-
-        <div class="w-25 my-4 mx-auto">
-            <% include includes/messageFlash %>
-        </div>
-
-        <div id="flashMessage"></div>
-
-        <div class="container-fluid row no-gutters justify-content-center">
-
-            <div id="managementContent"></div>
-
-            <% desktopInfo.forEach(desktop => { %>
-                <div class="col-3 mx-3 border border-dark my-2">
-                    <div class="py-2 border-bottom border-dark d-flex justify-content-between align-items-center">
-                        <h6 class="font-weight-bold text-center ml-4 desktopName"><%= desktop.name %></h6>
-                        <div class="d-flex justify-content-between">
-                            <button class="btn border-0 outline-0 mx-0 px-1 btnEditDesktop mx-1" data-desktopId="<%=desktop.id%>">
-                                <span class="iconify" data-inline="false" data-icon="clarity:edit-solid" style="font-size: 18px !important; margin-top: -8px !important;"></span>
-                            </button>
-                            <button type="button" class="btn bg-transparent outline-0 border-0 p-0 my-0 ml-0 mr-4 btnDeleteDesktop mx-1" data-desktopId="<%=desktop.id%>">
-                                <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 20px !important; margin-top: -10px !important;"></span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <table class="table table-sm py-0 my-0">
-                    <% for(let i = 0; i < 10; i++ ) { %>
-                    <tr class="py-0 my-0">
-                        <td class="pl-3" style="width: 15% !important; border-right: 1px solid black;"> <%= startHours + i %>h </td>
-                        <% if(assignInfo.length == 0) { %>
-                        <div class="d-flex justify-content-between w-100">
-                            <td class="pl-3 w-100"></td>
-                            <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center">
-                                <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
-                                    <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
-                                </button>
-                            </td>
-                        </div>
-                        <% } else { %>
-
-                            <% var info = assignInfo.find(assign => assign.desktopId == desktop.id) %>
-                            
-                            <% assignInfo.forEach(assign => { %>
-                                <% if(assign.hours == (startHours + i) && assign.desktopId == desktop.id ) { %>
-                                    <div class="d-flex justify-content-between w-100">
-                                        <td class="pl-3 w-100">
-                                            <% if(assign.clientId) { %>
-                                                <%= assign.client.surname %> <%= assign.client.name %>
-                                            <% } %>
-                                        </td>
-                                        <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center">
-                                            <% if(assign.clientId) { %>
-                                                <button class="btn border-0 outline-0 mx-0 px-1 btnDeleteAssign" data-idAssign="<%=assign.id%>">
-                                                    <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 18px !important;"></span>
-                                                </button>
-                                            <% } else { %>
-                                                <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
-                                                    <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
-                                                </button>
-                                            <% } %>
-                                        </td>
-                                    </div>
-                                <% } %>
-                            <% }) %>
-
-                            <% if(!info) { %>
+                    <% var info = assignInfo.find(assign => assign.desktopId == desktop.id) %>
+                    
+                    <% assignInfo.forEach(assign => { %>
+                        <% if(assign.hours == (startHours + i) && assign.desktopId == desktop.id ) { %>
                             <div class="d-flex justify-content-between w-100">
-                                <td class="pl-3 w-100"></td>
+                                <td class="pl-3 w-100">
+                                    <% if(assign.clientId) { %>
+                                        <%= assign.client.surname %> <%= assign.client.name %>
+                                    <% } %>
+                                </td>
                                 <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center">
-                                    <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
-                                        <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
-                                    </button>
+                                    <% if(assign.clientId) { %>
+                                        <button class="btn border-0 outline-0 mx-0 px-1 btnDeleteAssign" data-idAssign="<%=assign.id%>">
+                                            <span class="iconify" data-inline="false" data-icon="dashicons:trash" style="color: #F10404 !important;font-size: 18px !important;"></span>
+                                        </button>
+                                    <% } else { %>
+                                        <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                            <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
+                                        </button>
+                                    <% } %>
                                 </td>
                             </div>
-                            <% } %>
                         <% } %>
-                    </tr>
+                    <% }) %>
+
+                    <% if(!info) { %>
+                    <div class="d-flex justify-content-between w-100">
+                        <td class="pl-3 w-100"></td>
+                        <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center">
+                            <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
+                            </button>
+                        </td>
+                    </div>
                     <% } %>
-                    </table>
-                </div>
-            <% }) %>
+                <% } %>
+            </tr>
+            <% } %>
+            </table>
         </div>
-
-
-        <% include includes/modalDesktop %>
-
-        <% include includes/modalClient %>
-
-        <% include includes/modalAssign %>
-
-        <script src="/js/generalScript.js"></script>
-        <script src="/js/assignScript.js"></script>
-        <script src="/js/currentDate.js"></script>
-        <script src="/js/desktopScript.js"></script>
-    </body>
-</html>
+    <% }) %>
+</div>

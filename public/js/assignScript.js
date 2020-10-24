@@ -6,9 +6,9 @@ if (btnAddAssign.length != 0) {
     btnAddAssign.forEach(btn => {
         btn.addEventListener('click', evt => {
             $('#modalAddAssign').modal('toggle');
-            document.getElementById('assignHourAdd').value = evt.currentTarget.getAttribute('data-hours');
-            document.getElementById('assignDesktopAdd').value = evt.currentTarget.getAttribute('data-desktopId');
-            document.getElementById('assignDateAdd').value = document.getElementById('date').value;
+            document.getElementById('assignHourAdd').value = btn.getAttribute('data-hours');
+            document.getElementById('assignDesktopAdd').value = btn.getAttribute('data-desktopId');
+            document.getElementById('currentDate').value = document.getElementById('date').value;
         })
     })
 }

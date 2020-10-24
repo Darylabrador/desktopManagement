@@ -45,11 +45,14 @@ let urlDeleteAssign   = "/dashboard/assign/delete";
 
 // other element 
 let paginationContent = document.getElementById('paginationContent');
-let managementContent = document.getElementById('managementContent');
 let flashMessage      = document.getElementById('flashMessage');
 
+// Interface data
+let managementContent = document.getElementById('managementContent');
+let urlInitInterface = '/dashboard/info';
+
 // Ajax 
-let method = "POST";
+let method;
 let data;
 let request = new XMLHttpRequest();
 let urlSearchClient = '/dashboard/client';
@@ -92,6 +95,7 @@ const displayMessageNode = (node, type, message) => {
 // form : add desktop
 desktopAddForm.addEventListener('submit', evt => {
     evt.preventDefault();
+    method = "POST";
     data = {
         name: desktopNameAdd.value
     }
@@ -104,9 +108,11 @@ desktopAddForm.addEventListener('submit', evt => {
             if (request.status === 200) {
                 let reponse = request.response;
                 if (reponse.success) {
-                    displayMessageNode(flashMessage, 'success', reponse.message);
                     $('#modalAddDesktop').modal('toggle');
                     desktopAddForm.reset();
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();
                 } else {
                     displayMessageNode(messageAddDesktop, 'danger', reponse.message);
                 }   
@@ -126,6 +132,7 @@ desktopAddForm.addEventListener('submit', evt => {
 // form : edit desktop
 desktopEditForm.addEventListener('submit', evt => {
     evt.preventDefault();
+    method = "POST";
     data = {
         idDesktop: idDesktopEdit.value,
         name: desktopNameEdit.value
@@ -139,9 +146,11 @@ desktopEditForm.addEventListener('submit', evt => {
             if (request.status === 200) {
                 let reponse = request.response;
                 if (reponse.success) {
-                    displayMessageNode(flashMessage, 'success', reponse.message);
-                    desktopEditForm.reset();
                     $('#modalEditDesktop').modal('toggle');
+                    desktopEditForm.reset();
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();
                 } else {
                     displayMessageNode(messageEditDesktop, 'danger', reponse.message);
                 }
@@ -161,6 +170,7 @@ desktopEditForm.addEventListener('submit', evt => {
 // form : delete desktop
 desktopDeleteForm.addEventListener('submit', evt => {
     evt.preventDefault();
+    method = "POST";
     data = {
         idDesktop: desktopDeleteId.value,
     }
@@ -173,11 +183,15 @@ desktopDeleteForm.addEventListener('submit', evt => {
             if (request.status === 200) {
                 let reponse = request.response;
                 if (reponse.success) {
-                    displayMessageNode(flashMessage, 'success', reponse.message);
                     $('#modalDeleteDesktop').modal('toggle');
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();                  
                 } else {
-                    displayMessageNode(flashMessage, 'danger', reponse.message);
                     $('#modalDeleteDesktop').modal('toggle');
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();
                 }
             }
         } else {
@@ -193,6 +207,7 @@ desktopDeleteForm.addEventListener('submit', evt => {
 
 // Autocomplete
 clientSearch.addEventListener('keyup', evt => {
+    method = "POST";
     let clientInfo = "";
     clientInfo += evt.currentTarget.value;
 
@@ -229,6 +244,7 @@ clientSearch.addEventListener('keyup', evt => {
                     });
                 }else{
                     $('#modalAddAssign').modal('toggle');
+                    
                     bootbox.alert({
                         centerVertical: true,
                         message: "Une erreur est survenue"
@@ -254,6 +270,7 @@ if(btnToAddClient) {
         $('#modalAddAssign').modal('toggle');
         $('#modalAddClient').modal('toggle');
         assignClientForm.reset();
+        method = "POST";
 
         addClientForm.addEventListener('submit', evt => {
             evt.preventDefault();
@@ -302,6 +319,7 @@ if(btnToAddClient) {
 // form : add assign
 assignClientForm.addEventListener('submit', evt => {
     evt.preventDefault();
+    method = "POST";
     data = {
         currentDate: currentDate.value,
         hours: assignHourAdd.value,
@@ -320,6 +338,9 @@ assignClientForm.addEventListener('submit', evt => {
                     displayMessageNode(flashMessage, 'success', reponse.message);
                     $('#modalAddAssign').modal('toggle');
                     assignClientForm.reset();
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();
                 } else {
                     displayMessageNode(messageAdd, 'danger', reponse.message);
                 }
@@ -327,6 +348,7 @@ assignClientForm.addEventListener('submit', evt => {
         } else {
             $('#modalAddAssign').modal('toggle');
             assignClientForm.reset();
+            
             bootbox.alert({
                 centerVertical: true,
                 message: "Ressource indisponible"
@@ -339,6 +361,7 @@ assignClientForm.addEventListener('submit', evt => {
 // form : delete assign
 assignDeleteForm.addEventListener('submit', evt => {
     evt.preventDefault();
+    method = "POST";
     data = {
         idAssign: idAssignDelete.value
     }
@@ -351,11 +374,15 @@ assignDeleteForm.addEventListener('submit', evt => {
             if (request.status === 200) {
                 let reponse = request.response;
                 if (reponse.success) {
-                    displayMessageNode(flashMessage, 'success', reponse.message);
                     $('#modalDeleteAssign').modal('toggle');
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();
                 } else {
-                    displayMessageNode(flashMessage, 'danger', reponse.message);
                     $('#modalDeleteAssign').modal('toggle');
+                    localStorage.setItem('message', reponse.message);
+                    localStorage.setItem('isSuccess', reponse.success);
+                    location.reload();
                 }
             }
         } else {
@@ -368,3 +395,12 @@ assignDeleteForm.addEventListener('submit', evt => {
         }
     }
 })
+
+if(localStorage.getItem('message')){
+    if (localStorage.getItem('isSuccess')){
+        displayMessageNode(flashMessage, 'success', localStorage.getItem('message'));
+    } else {
+        displayMessageNode(flashMessage, 'danger', localStorage.getItem('message'));
+    }
+    localStorage.clear();
+}

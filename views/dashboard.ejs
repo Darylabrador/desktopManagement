@@ -31,6 +31,22 @@
         <!-- pagination button -->
         <div class="mt-4 ml-4">
             <div id="paginationContent"></div>
+
+            <% if(totalItem != 0) { %>
+                <% if(hasPreviousPage) { %>
+                <a href="?page=<%= previousPage %>" class="btn btn-outline-primary mx-2">
+                    <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous"
+                        style="font-size: 25px !important;"></span>
+                </a>
+                <% } %>
+                
+                <% if(hasNextPage) { %>
+                <a href="?page=<%= nextPage %>" class="btn btn-outline-primary mx-2">
+                    <span class="iconify" data-inline="false" data-icon="grommet-icons:form-next"
+                        style="font-size: 25px !important;"></span>
+                </a>
+                <% } %>
+            <% } %>
             <button class="btn border-0 outline-0 mx-2" data-toggle="modal" data-target="#modalAddDesktop">
                 <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outlined" style="color: #056124 !important; font-size: 35px !important;"></span>
             </button>
@@ -44,7 +60,7 @@
                 <div class="py-2 border-bottom border-dark d-flex justify-content-between align-items-center">
                     <h6 class="font-weight-bold text-center ml-4 desktopName"><%= desktop.name %></h6>
                     <div class="d-flex justify-content-between">
-                        <button type="button" class="btn border-0 outline-0 mx-0 px-1 btnEditDesktop mx-1" data-desktopId="<%=desktop.id%>">
+                        <button class="btn border-0 outline-0 mx-0 px-1 btnEditDesktop mx-1" data-desktopId="<%=desktop.id%>">
                             <span class="iconify" data-inline="false" data-icon="clarity:edit-solid"
                                 style="font-size: 18px !important; margin-top: -8px !important;"></span>
                         </button>
@@ -119,6 +135,7 @@
                 </table>
             </div>
             <% }) %>
+
         </div>
 
 
