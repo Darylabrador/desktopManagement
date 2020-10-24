@@ -1,11 +1,24 @@
+// Requirement
+let clientSearch     = document.getElementById('clientSearch');
+let btnToAddClient   = document.getElementById('btnAddClient');
+let messageAdd       = document.getElementById('messageAdd');
+let addClientForm    = document.getElementById('addClientForm');
+let assignClientForm = document.getElementById('assignClientForm');
+
+// Ajax 
 let method = "POST";
 let request = new XMLHttpRequest();
+let urlSearchClient = '/dashboard/client';
+let urlCreateUser   = "/dashboard/client/add";
 
-// function
-var substringMatcher = function (strs) {
+
+/**
+ * Returns searched match
+ * @param {String} strs 
+ */
+const substringMatcher = (strs) => {
     return function findMatches(q, cb) {
-        var matches, substringRegex;
-        matches = [];
+        var matches = [];
         substrRegex = new RegExp(q, 'i');
         $.each(strs, function (i, str) {
             if (substrRegex.test(str))
@@ -16,67 +29,26 @@ var substringMatcher = function (strs) {
 }
 
 
-// edit desktop
-let btnEditDesktop = document.querySelectorAll('.btnEditDesktop');
-let desktopName = document.querySelectorAll('.desktopName');
-
-if (btnEditDesktop.length != 0 && desktopName.length != 0) {
-    for (let i = 0; i < btnEditDesktop.length; i++) {
-        btnEditDesktop[i].addEventListener('click', evt => {
-            $('#modalEditDesktop').modal('toggle');
-            document.getElementById('desktopEditId').value = evt.currentTarget.getAttribute('data-desktopId');
-            document.getElementById('desktopNameEdit').value = desktopName[i].textContent;
-        });
-    }
+/**
+ * Display message
+ * @param {String} type 
+ * @param {String} message 
+ */
+const displayMessage = (type, message) => {
+    messageAdd.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show my-0" role="alert">
+            <strong>${message}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
 }
 
-
-// delete desktop
-let btnDeleteDesktop = document.querySelectorAll('.btnDeleteDesktop');
-
-if (btnDeleteDesktop.length != 0) {
-    btnDeleteDesktop.forEach(btn => {
-        btn.addEventListener('click', evt => {
-            $('#modalDeleteDesktop').modal('toggle');
-            document.getElementById('desktopDeleteId').value = evt.currentTarget.getAttribute('data-desktopId');
-        });
-    });
-}
-
-
-// Add assign
-let btnAddAssign = document.querySelectorAll('.btnAddAssign');
-
-if (btnAddAssign.length != 0) {
-    btnAddAssign.forEach(btn => {
-        btn.addEventListener('click', evt => {
-            $('#modalAddAssign').modal('toggle');
-            document.getElementById('assignHourAdd').value    = evt.currentTarget.getAttribute('data-hours');
-            document.getElementById('assignDesktopAdd').value = evt.currentTarget.getAttribute('data-desktopId');
-            document.getElementById('assignDateAdd').value = document.getElementById('date').value;
-        })
-    })
-}
-
-
-// delete assign
-let btnDeleteAssign = document.querySelectorAll('.btnDeleteAssign');
-
-if (btnDeleteAssign.length != 0) {
-    btnDeleteAssign.forEach(btn => {
-        btn.addEventListener('click', evt => {
-            $('#modalDeleteAssign').modal('toggle');
-            document.getElementById('idAssignDelete').value = evt.currentTarget.getAttribute('data-idAssign');
-        })
-    })
-}
 
 // Autocomplete
-let clientSearch = document.getElementById('clientSearch');
-
 clientSearch.addEventListener('keyup', evt => {
     let clientInfo = "";
-    let btnToAddClient = document.getElementById('btnAddClient');
     clientInfo += evt.currentTarget.value;
 
     if (clientInfo == ""){
@@ -84,7 +56,6 @@ clientSearch.addEventListener('keyup', evt => {
     }
 
     if(clientInfo.length >= 3){
-        let urlSearchClient = '/dashboard/client';
         let dataSend = {
             clientInfoSearched: clientInfo
         }
@@ -133,17 +104,14 @@ clientSearch.addEventListener('keyup', evt => {
 
 
 // add client if not found
-let btnAddClient = document.getElementById('btnAddClient');
-
-if(btnAddClient) {
-    btnAddClient.addEventListener('click', evt => {
+if(btnToAddClient) {
+    btnToAddClient.addEventListener('click', evt => {
         $('#modalAddAssign').modal('toggle');
         $('#modalAddClient').modal('toggle');
+        assignClientForm.reset();
 
-        let addClientForm = document.getElementById('addClientForm');
         addClientForm.addEventListener('submit', evt => {
             evt.preventDefault();
-            let urlCreateUser = "/dashboard/client/add";
             let dataSend = {
                 name: document.getElementById('name').value,
                 surname: document.getElementById('surname').value
@@ -156,29 +124,14 @@ if(btnAddClient) {
                 if (request.readyState === XMLHttpRequest.DONE) {
                     if (request.status === 200) {
                         let reponse = request.response;
-                        let messageAdd = document.getElementById('messageAdd');
                         $('#modalAddAssign').modal('toggle');
                         $('#modalAddClient').modal('toggle');
                         addClientForm.reset();
 
                         if(reponse.success) {
-                            messageAdd.innerHTML = `
-                                <div class="alert alert-success alert-dismissible fade show my-0" role="alert">
-                                    <strong>${reponse.message}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `;
+                            displayMessage('success', reponse.message);
                         } else {
-                            messageAdd.innerHTML = `
-                                <div class="alert alert-danger alert-dismissible fade show my-0" role="alert">
-                                    <strong>${reponse.message}</strong>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `;
+                            displayMessage('danger', reponse.message);
                         }
                     } else {
                         $('#modalAddClient').modal('toggle');
@@ -198,8 +151,3 @@ if(btnAddClient) {
         })
     })
 }
-
-
-// Current date on datepicker
-let today = new Date().toISOString().substr(0, 10);
-document.getElementById('currentDate').value = today;
