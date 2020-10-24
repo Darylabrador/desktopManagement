@@ -17,6 +17,8 @@ const { validationResult } = require('express-validator');
  * Handle get info about client for autocomplete
  *
  * @function clientInfo
+ * @param {String} clientInfoSearched
+ * @throws will return json with error message
  */
 exports.clientInfo = async (req, res, next) => {
     const { clientInfoSearched } = req.body;
@@ -34,7 +36,6 @@ exports.clientInfo = async (req, res, next) => {
             'userList': userList
         });
     } catch (error) {
-        console.log(error)
         res.status(200).json({
             'message': 'Une erreur est survenue',
             'success': false
@@ -47,6 +48,9 @@ exports.clientInfo = async (req, res, next) => {
  * Handle POST create client
  *
  * @function createClient
+ * @param {String} name
+ * @param {String} surname
+ * @throws will return json with error message
  */
 exports.createClient = async (req, res, next) => {
     const {name, surname} = req.body;
@@ -60,7 +64,7 @@ exports.createClient = async (req, res, next) => {
     }
 
     try {
-        const nameToLowerCase = name.toLowerCase();
+        const nameToLowerCase    = name.toLowerCase();
         const surnameToLowerCase = surname.toLowerCase();
 
         const newUser = new Client({

@@ -17,7 +17,7 @@ const Assign  = require('./models/assign');
 
 // implement relationship
 Client.hasMany(Assign);
-Desktop.hasMany(Assign);
+Desktop.hasMany(Assign, { onDelete: "cascade" });
 Assign.belongsTo(Client);
 Assign.belongsTo(Desktop);
 
@@ -85,17 +85,17 @@ app.use((error, req, res, next) => {
 });
 
 // Database initialisation
-var fakeAdminMail = "test@test.com";
+var fakeAdminMail = "admin@gmail.com";
 
 databaseConnection
-    //.sync({ force: true })
+    // .sync({ force: true })
     .sync()
     .then(() => {
         return User.findOne({ where: { mail: fakeAdminMail }});
     })
     .then((user) => {
         if(!user) {
-            bcrypt.hash('admin', 12).then(hashedPwd => {
+            bcrypt.hash('adminpassword', 12).then(hashedPwd => {
                 const fakeAdmin = new User({
                     mail: fakeAdminMail,
                     password: hashedPwd

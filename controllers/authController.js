@@ -28,7 +28,6 @@ exports.getLogin = (req, res, next) => {
 }
 
 
-
 /**
  * Handle post login
  * 

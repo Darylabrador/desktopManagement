@@ -13,6 +13,7 @@ var ITEM_PER_PAGE = 3;
  * Get dashboard page with current date
  *
  * @function getDashboard
+ * @throws will redirect to error page if we got one
  */
 exports.getDashboard = async (req, res, next) => {
     let date = new Date().toISOString().substr(0, 10);
@@ -62,6 +63,7 @@ exports.getDashboard = async (req, res, next) => {
  * Get dashboard page with specific date
  *
  * @function postDashboardDate
+ * @throws will redirect to error page if we got one
  */
 exports.postDashboardDate = async (req, res, next) => {
     const { date } = req.body;

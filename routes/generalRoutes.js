@@ -20,7 +20,6 @@ const generalController = require('../controllers/generalController');
 router.get('/dashboard', generalController.getDashboard);
 
 
-
 /**
  * Get dashboard page with specific date
  * @name getDashboard POST
