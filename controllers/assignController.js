@@ -20,7 +20,7 @@ const { validationResult } = require('express-validator');
  * @throws Will throw an error if one error occursed
  */
 exports.addAssign = async (req, res, next) => {
-    const {date, hours, desktopId, client} = req.body;
+    const { currentDate, hours, desktopId, client} = req.body;
     const clientId = client.split(' - ')[0];
     let startHours = 8;
     const errors = validationResult(req);
@@ -37,7 +37,8 @@ exports.addAssign = async (req, res, next) => {
         // search if it exist
         const assignExist = await Assign.findOne({
             where: {
-                date, hours, desktopId
+                date: currentDate, 
+                hours, desktopId
             }
         });
 
@@ -46,7 +47,7 @@ exports.addAssign = async (req, res, next) => {
             for (let i = 0; i < 10; i++) {
                 let hoursInfo = startHours + i;
                 const assignDesktop = new Assign({
-                    date, 
+                    date: currentDate, 
                     hours: hoursInfo, 
                     desktopId
                 });
@@ -56,7 +57,8 @@ exports.addAssign = async (req, res, next) => {
             // first assign
             const assignDesktop = await Assign.findOne({
                 where: {
-                    date, hours, desktopId
+                    date: currentDate,
+                    hours, desktopId
                 }
             });
 

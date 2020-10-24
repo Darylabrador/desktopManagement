@@ -88,7 +88,7 @@ app.use((error, req, res, next) => {
 var fakeAdminMail = "test@test.com";
 
 databaseConnection
-    // .sync({ force: true })
+    //.sync({ force: true })
     .sync()
     .then(() => {
         return User.findOne({ where: { mail: fakeAdminMail }});

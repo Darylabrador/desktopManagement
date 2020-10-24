@@ -31,21 +31,27 @@
     <!-- datepicker -->
     <div class="mt-4 ml-3 col-3">
         <form action="/dashboard" method="POST" class="d-flex">
-            <input type="date" name="date" id="date" class="form-control">
+            <input type="date" name="date" id="date" class="form-control" value="<%= date ? date : '' %>">
             <button type="submit" class="btn btn-primary">Rechercher</button>
         </form>
-        <input type="hidden" name="currentDate" id="currentDate">
     </div>
 
     <!-- pagination button -->
     <div class="mt-4 ml-4">
-        <button class="btn btn-outline-primary mx-2"> 
-            <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous" style="font-size: 25px !important;"></span> 
-        </button>
-
-        <button class="btn btn-outline-primary mx-2">
-            <span class="iconify" data-inline="false" data-icon="grommet-icons:form-next" style="font-size: 25px !important;"></span>
-        </button>
+        
+        <% if(totalItem != 0) { %>
+            <% if(hasPreviousPage) { %>
+            <a href="?page=<%= previousPage %>" class="btn btn-outline-primary mx-2"> 
+                <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous" style="font-size: 25px !important;"></span> 
+            </a>
+            <% } %>
+    
+            <% if(hasNextPage) { %>
+            <a href="?page=<%= nextPage %>" class="btn btn-outline-primary mx-2">
+                <span class="iconify" data-inline="false" data-icon="grommet-icons:form-next" style="font-size: 25px !important;"></span>
+            </a>
+            <% } %>
+        <% } %>
 
         <button class="btn border-0 outline-0 mx-2" data-toggle="modal" data-target="#modalAddDesktop">
             <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outlined" style="color: #056124 !important; font-size: 35px !important;"></span>
@@ -85,6 +91,9 @@
                         </td>
                     </div>
                     <% } else { %>
+
+                        <% var info = assignInfo.find(assign => assign.desktopId == desktop.id) %>
+                        
                         <% assignInfo.forEach(assign => { %>
                             <% if(assign.hours == (startHours + i) && assign.desktopId == desktop.id ) { %>
                                 <div class="d-flex justify-content-between w-100">
@@ -107,6 +116,17 @@
                                 </div>
                             <% } %>
                         <% }) %>
+
+                        <% if(!info) { %>
+                        <div class="d-flex justify-content-between w-100">
+                            <td class="pl-3 w-100"></td>
+                            <td class="py-0 my-0 w-100 pr-4 d-flex justify-content-center align-items-center">
+                                <button class="btn border-0 outline-0 mx-0 px-1 btnAddAssign" data-desktopId="<%=desktop.id%>" data-hours="<%= startHours + i %>">
+                                    <span class="iconify" data-inline="false" data-icon="ant-design:plus-circle-outline" style="color: #056124 !important; font-size: 18px !important;"></span>
+                                </button>
+                            </td>
+                        </div>
+                        <% } %>
                     <% } %>
                 </tr>
                 <% } %>
