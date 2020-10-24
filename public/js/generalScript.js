@@ -81,9 +81,9 @@ const substringMatcher = (strs) => {
  * @param {String} type 
  * @param {String} message 
  */
-const displayMessageNode = (node, type, message) => {
+const displayMessageNode = (node, type, message, width = 25) => {
     node.innerHTML = `
-        <div class="alert alert-${type} alert-dismissible fade show my-0 w-25 mx-auto" role="alert">
+        <div class="alert alert-${type} alert-dismissible fade show my-0 w-${width} mx-auto" role="alert">
             <strong>${message}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -291,9 +291,9 @@ if(btnToAddClient) {
                         addClientForm.reset();
 
                         if(reponse.success) {
-                            displayMessage(messageAdd, 'success', reponse.message);
+                            displayMessageNode(messageAdd, 'success', reponse.message, 100);
                         } else {
-                            displayMessage(messageAdd, 'danger', reponse.message);
+                            displayMessageNode(messageAdd, 'danger', reponse.message, 100);
                         }
                     } else {
                         $('#modalAddClient').modal('toggle');
