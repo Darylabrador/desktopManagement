@@ -6,8 +6,8 @@
 
 By default you can connect as Administrator using this credentials: 
 
-- Login : admin@gmail.com
-- Password : adminpassword
+- Login : <span>admin@gmail.com</span>
+- Password : <span>adminpassword</span>
 
 ## Modules installation
 
