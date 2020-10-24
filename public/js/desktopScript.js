@@ -7,7 +7,7 @@ if (btnEditDesktop.length != 0 && desktopName.length != 0) {
     for (let i = 0; i < btnEditDesktop.length; i++) {
         btnEditDesktop[i].addEventListener('click', evt => {
             $('#modalEditDesktop').modal('toggle');
-            document.getElementById('desktopEditId').value = evt.currentTarget.getAttribute('data-desktopId');
+            document.getElementById('idDesktopEdit').value = btnEditDesktop[i].getAttribute('data-desktopId');
             document.getElementById('desktopNameEdit').value = desktopName[i].textContent;
         });
     }
@@ -18,7 +18,7 @@ if (btnDeleteDesktop.length != 0) {
     btnDeleteDesktop.forEach(btn => {
         btn.addEventListener('click', evt => {
             $('#modalDeleteDesktop').modal('toggle');
-            document.getElementById('desktopDeleteId').value = evt.currentTarget.getAttribute('data-desktopId');
+            document.getElementById('desktopDeleteId').value = btn.getAttribute('data-desktopId');
         });
     });
 }

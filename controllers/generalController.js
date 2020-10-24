@@ -38,9 +38,6 @@ exports.getDashboard = async (req, res, next) => {
         });
 
         res.render('dashboard', {
-            errorMessage: null,
-            hasError: false,
-            validationErrors: [],
             startHours,
             desktopInfo,
             assignInfo,
@@ -88,9 +85,6 @@ exports.postDashboardDate = async (req, res, next) => {
         });
 
         res.render('dashboard', {
-            errorMessage: null,
-            hasError: false,
-            validationErrors: [],
             startHours,
             desktopInfo,
             assignInfo,
