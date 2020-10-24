@@ -53,6 +53,7 @@ if (btnAddAssign.length != 0) {
             $('#modalAddAssign').modal('toggle');
             document.getElementById('assignHourAdd').value    = evt.currentTarget.getAttribute('data-hours');
             document.getElementById('assignDesktopAdd').value = evt.currentTarget.getAttribute('data-desktopId');
+            document.getElementById('assignDateAdd').value = document.getElementById('date').value;
         })
     })
 }
@@ -201,4 +202,4 @@ if(btnAddClient) {
 
 // Current date on datepicker
 let today = new Date().toISOString().substr(0, 10);
-document.getElementById('date').value = today;
+document.getElementById('currentDate').value = today;

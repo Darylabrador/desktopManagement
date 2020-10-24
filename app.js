@@ -95,7 +95,7 @@ databaseConnection
     })
     .then((user) => {
         if(!user) {
-            bcrypt.hash('adminpassword', 12).then(hashedPwd => {
+            bcrypt.hash('admin', 12).then(hashedPwd => {
                 const fakeAdmin = new User({
                     mail: fakeAdminMail,
                     password: hashedPwd

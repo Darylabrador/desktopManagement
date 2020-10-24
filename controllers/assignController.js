@@ -20,13 +20,62 @@ const { validationResult } = require('express-validator');
  * @throws Will throw an error if one error occursed
  */
 exports.addAssign = async (req, res, next) => {
+    const {date, hours, desktopId, client} = req.body;
+    const clientId = client.split(' - ')[0];
+    let startHours = 8;
+    const errors = validationResult(req);
+
+    // handle error from input validation
+    if (!errors.isEmpty()) {
+        return res.status(422).render('dashboard', {
+            hasError: true,
+            errorMessage: errors.array()[0].msg
+        });
+    }
 
     try {
+        // search if it exist
+        const assignExist = await Assign.findOne({
+            where: {
+                date, hours, desktopId
+            }
+        });
+
+        // create all possible line        
+        if (!assignExist) {
+            for (let i = 0; i < 10; i++) {
+                let hoursInfo = startHours + i;
+                const assignDesktop = new Assign({
+                    date, 
+                    hours: hoursInfo, 
+                    desktopId
+                });
+                await assignDesktop.save();
+            }
+            
+            // first assign
+            const assignDesktop = await Assign.findOne({
+                where: {
+                    date, hours, desktopId
+                }
+            });
+
+            assignDesktop.clientId = clientId;
+            await assignDesktop.save();
+            req.flash('success', 'Attribution effectuée');
+            return res.redirect('/dashboard');
+        }
+
+        // if the line already exist, assign directly
+        assignExist.clientId = clientId;
+        await assignExist.save();
+        req.flash('success', 'Attribution effectuée');
+        return res.redirect('/dashboard');
         
     } catch (error) {
         const err = new Error(error);
         err.httpStatusCode = 500;
-        return next(err);
+        return next(err)
     }
 }
 
@@ -46,7 +95,8 @@ exports.deleteAssign = async (req, res, next) => {
             req.flash('error', 'Créneau introuvable');
             return res.redirect('/dashboard');
         }
-        await assignExist.destroy();
+        assignExist.clientId = null;
+        await assignExist.save();
         req.flash('success', 'Suppression effectuée');
         return res.redirect('/dashboard');
     } catch (error) {
