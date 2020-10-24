@@ -9,8 +9,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="modal-body" method="POST" action="/dashboard/desktop/add">
-                <input required name="name" type="text" class="form-control" placeholder="Nom du poste">
+            <div id="messageAddDesktop"></div>
+            <form id="desktopAddForm" class="modal-body" method="POST" action="/dashboard/desktop/add">
+                <input required id="desktopNameAdd" name="name" type="text" class="form-control" placeholder="Nom du poste">
                 <div class="mt-4 w-100 d-flex justify-content-end">
                     <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
                     <button type="submit" class="btn btn-primary mx-1"> Ajouter </button>
@@ -30,9 +31,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="modal-body" method="POST" action="/dashboard/desktop/edit">
-                <input type="hidden" name="idDesktop" class="form-control" id="desktopEditId">
-                <input required name="name" type="text" class="form-control" id="desktopNameEdit">
+            <div id="messageEditDesktop"></div>
+            <form id="desktopEditForm" class="modal-body" method="POST" action="/dashboard/desktop/edit">
+                <input id="idDesktopEdit" type="hidden" name="idDesktop" class="form-control" id="desktopEditId">
+                <input id="desktopNameEdit" required name="name" type="text" class="form-control" id="desktopNameEdit">
                 <div class="mt-4 w-100 d-flex justify-content-end">
                     <button type="button" class="btn btn-secondary mx-1" data-dismiss="modal">Annuler </button>
                     <button type="submit" class="btn btn-primary mx-1"> Modifier </button>
@@ -51,7 +53,7 @@
                 </button>
             </div>
             <h5 class="text-center"> Êtes-vous sûr de vouloir supprimer ? </h5>
-            <form class="modal-body" method="POST" action="/dashboard/desktop/delete">
+            <form id="desktopDeleteForm" class="modal-body" method="POST" action="/dashboard/desktop/delete">
                 <input type="hidden" name="idDesktop" id="desktopDeleteId">
                 <div class="mt-4 w-100 d-flex justify-content-end">
                     <button type="button" class="btn btn-primary mx-1" data-dismiss="modal">Non</button>

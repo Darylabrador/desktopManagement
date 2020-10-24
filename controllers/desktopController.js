@@ -22,20 +22,24 @@ exports.addDesktop = async (req, res, next) => {
 
     // handle error from input validation
     if(!errors.isEmpty()) {
-        return res.status(422).render('dashboard', {
-            hasError: true,
-            errorMessage: errors.array()[0].msg
+        return res.status(200).json({
+            success: false,
+            message: errors.array()[0].msg
         });
     }
 
     try {
         const newDesktop = new Desktop({name});
         await newDesktop.save();
-        req.flash('success', 'Poste ajouté avec succès');
-        res.redirect('/dashboard');
+        res.status(200).json({
+            success: true,
+            message: 'Poste ajouté avec succès'
+        })
     } catch (error) {
-        req.flash('error', 'Poste existe déjà');
-        res.redirect('/dashboard');
+        return res.status(200).json({
+            success: false,
+            message: 'Poste existe déjà'
+        })
     }
 }
 
@@ -57,26 +61,31 @@ exports.editDesktop = async (req, res, next) => {
 
     // handle error from input validation
     if (!errors.isEmpty()) {
-        return res.status(422).render('dashboard', {
-            hasError: true,
-            errorMessage: errors.array()[0].msg
+        return res.status(200).json({
+            success: false,
+            message: errors.array()[0].msg
         });
     }
 
     try {
         const updateDesktop = await Desktop.findByPk(idDesktop);
         if (!updateDesktop) {
-            req.flash('error', 'Poste introuvable');
-            return res.redirect('/dashboard');
+            return res.status(200).json({
+                success: false,
+                message: 'Poste introuvable'
+            })
         }
         updateDesktop.name = name;
         await updateDesktop.save();
-        req.flash('success', 'Mise à jour réussi');
-        res.redirect('/dashboard');
+        res.status(200).json({
+            success: true,
+            message: 'Mise à jour réussi'
+        })
     } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err)
+        return res.status(200).json({
+            success: false,
+            message: 'Une erreur est survenue'
+        });
     }
 }
 
@@ -94,15 +103,20 @@ exports.deleteDesktop = async (req, res, next) => {
     try {
         const deleteDesktop = await Desktop.findByPk(idDesktop);
         if (!deleteDesktop){
-            req.flash('error', 'Poste introuvable');
-            return res.redirect('/dashboard');
+            return res.status(200).json({
+                success: false,
+                message: 'Poste introuvable'
+            })
         }
         await deleteDesktop.destroy();
-        req.flash('success', 'Suppression effectué');
-        res.redirect('/dashboard');
+        res.status(200).json({
+            success: true,
+            message: 'Suppression effectuée'
+        })
     } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err)
+        return res.status(200).json({
+            success: false,
+            message: 'Une erreur est survenue'
+        });
     }
 }

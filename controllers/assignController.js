@@ -29,9 +29,9 @@ exports.addAssign = async (req, res, next) => {
 
     // handle error from input validation
     if (!errors.isEmpty()) {
-        return res.status(422).render('dashboard', {
-            hasError: true,
-            errorMessage: errors.array()[0].msg
+        return res.status(200).json({
+            success: false,
+            message: errors.array()[0].msg
         });
     }
 
@@ -66,20 +66,24 @@ exports.addAssign = async (req, res, next) => {
 
             assignDesktop.clientId = clientId;
             await assignDesktop.save();
-            req.flash('success', 'Attribution effectuée');
-            return res.redirect('/dashboard');
+            return res.status(200).json({
+                success: true,
+                message: 'Attribution effectuée'
+            });
         }
 
         // if the line already exist, assign directly
         assignExist.clientId = clientId;
         await assignExist.save();
-        req.flash('success', 'Attribution effectuée');
-        return res.redirect('/dashboard');
-        
+        res.status(200).json({
+            success: true,
+            message: 'Attribution effectuée'
+        })
     } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err)
+        return res.status(200).json({
+            success: false,
+            message: 'Une erreur est survenue'
+        });
     }
 }
 
@@ -97,16 +101,21 @@ exports.deleteAssign = async (req, res, next) => {
     try {
         const assignExist = await Assign.findByPk(idAssign);
         if (!assignExist) {
-            req.flash('error', 'Créneau introuvable');
-            return res.redirect('/dashboard');
+            return res.status(200).json({
+                success: false,
+                message: 'Créneau introuvable'
+            })
         }
         assignExist.clientId = null;
         await assignExist.save();
-        req.flash('success', 'Suppression effectuée');
-        return res.redirect('/dashboard');
+        res.status(200).json({
+            success: true,
+            message: 'Suppression effectuée'
+        })
     } catch (error) {
-        const err = new Error(error);
-        err.httpStatusCode = 500;
-        return next(err);
+        return res.status(200).json({
+            success: false,
+            message: 'Une erreur est survenue'
+        });
     }
 }
