@@ -31,14 +31,14 @@
     <!-- datepicker -->
     <div class="mt-4 ml-3 col-3">
         <form action="/dashboard" method="POST" class="d-flex">
-            <input type="date" name="date" id="date" class="form-control" value="<%= date ? date : '' %>">
+            <input type="date" name="date" id="date" class="form-control" value="<%=date%>">
             <button type="submit" class="btn btn-primary">Rechercher</button>
         </form>
     </div>
 
     <!-- pagination button -->
     <div class="mt-4 ml-4">
-        
+
         <% if(totalItem != 0) { %>
             <% if(hasPreviousPage) { %>
             <a href="?page=<%= previousPage %>" class="btn btn-outline-primary mx-2"> 

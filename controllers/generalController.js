@@ -43,7 +43,7 @@ exports.getDashboard = async (req, res, next) => {
             startHours,
             desktopInfo,
             assignInfo,
-            date: undefined,
+            date,
             totalItem: totalItem.count,
             hasNextPage: ITEM_PER_PAGE * page < totalItem.count,
             hasPreviousPage: page > 1,
