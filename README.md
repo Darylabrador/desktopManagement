@@ -15,8 +15,8 @@ By default you can connect as Administrator using this credentials:
 
 ## Start the app
 
-1. In dev mode  : npm run dev
-2. In prod mode : npm start
+1. In development mode  : npm run dev
+2. In production mode : npm start
 
 ## Documentations
 
