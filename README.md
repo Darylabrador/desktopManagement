@@ -17,6 +17,7 @@ By default you can connect as Administrator using this credentials:
 
 1. In development mode  : npm run dev
 2. In production mode : npm start
+3. After starting the app, you can go to interface using this URL : http://localhost:3000
 
 ## Documentations
 
