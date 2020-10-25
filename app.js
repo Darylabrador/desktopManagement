@@ -8,6 +8,8 @@ const flash                = require('connect-flash');
 const isAuth               = require('./middlewares/is-auth');
 const databaseConnection   = require('./config/database');
 const bcrypt               = require('bcryptjs');
+const SequelizeStore       = require("connect-session-sequelize")(session.Store);
+
 
 // Models imports
 const User    = require('./models/user');
@@ -33,6 +35,35 @@ const errorController = require('./controllers/errorController');
 
 const app = express();
 
+// Session storage :
+const { Sequelize, DataTypes, Model } = require('sequelize');
+
+var Session = databaseConnection.define('Session', {
+    sid: {
+        type: Sequelize.STRING,
+        primaryKey: true
+    },
+    userId: Sequelize.STRING,
+    expires: Sequelize.DATE,
+    data: Sequelize.STRING(50000)
+});
+
+function extendDefaultFields(defaults, session) {
+    return {
+        data: defaults.data,
+        expires: defaults.expires,
+        userId: session.userId
+    };
+}
+
+var myStore = new SequelizeStore({
+    db: databaseConnection,
+    table: 'Session',
+    checkExpirationInterval: 1000 * 60 * 15, // The interval at which to cleanup expired sessions in milliseconds.
+    expiration: 1000 * 3600 * 3,  // The maximum age (in milliseconds) of a valid session.
+    extendDefaultFields: extendDefaultFields
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -50,6 +81,7 @@ app.use(
         secret: 'P8fSnrPNwkiwd5iGCAdKUd!KEeJHPU2ysQIdiTcUa#DaXjHIBrPi',
         resave: false,
         saveUninitialized: false,
+        store: myStore,
         cookie: {
             sameSite: true,
             maxAge: 1000 * 3600 * 5 // 5 hours
@@ -59,6 +91,7 @@ app.use(
 
 
 app.use(flash());
+myStore.sync();
 
 // Message flash
 app.use((req, res, next) => {
