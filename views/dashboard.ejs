@@ -35,14 +35,14 @@
 
             <% if(totalItem != 0) { %>
                 <% if(hasPreviousPage) { %>
-                <a href="?page=<%= previousPage %>" class="btn btn-outline-primary mx-2">
+                <a href="?page=<%= previousPage %>&date=<%=date%>" class="btn btn-outline-primary mx-2">
                     <span class="iconify" data-inline="false" data-icon="grommet-icons:form-previous"
                         style="font-size: 25px !important;"></span>
                 </a>
                 <% } %>
                 
                 <% if(hasNextPage) { %>
-                <a href="?page=<%= nextPage %>" class="btn btn-outline-primary mx-2">
+                <a href="?page=<%= nextPage %>&date=<%=date%>" class="btn btn-outline-primary mx-2">
                     <span class="iconify" data-inline="false" data-icon="grommet-icons:form-next"
                         style="font-size: 25px !important;"></span>
                 </a>

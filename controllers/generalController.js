@@ -19,7 +19,9 @@ var ITEM_PER_PAGE = 3;
 exports.getDashboard = async (req, res, next) => {
     let date = new Date().toISOString().substr(0, 10);
     const page = +req.query.page || 1;
+    const datePagination = req.query.date;
     let startHours = 8;
+    var assignInfo;
 
     try {
         const totalItem = await Desktop.findAndCountAll();
@@ -33,16 +35,23 @@ exports.getDashboard = async (req, res, next) => {
             limit: ITEM_PER_PAGE
         });
         
-        const assignInfo = await Assign.findAll({
-            include: [Client, Desktop],
-            where: { date }
-        });
+        if (datePagination) {
+            assignInfo = await Assign.findAll({
+                include: [Client, Desktop],
+                where: { date: datePagination }
+            });
+        } else {
+            assignInfo = await Assign.findAll({
+                include: [Client, Desktop],
+                where: { date }
+            });
+        }
 
         res.render('dashboard', {
             startHours,
             desktopInfo,
             assignInfo,
-            date,
+            date: datePagination || date,
             totalItem: totalItem.count,
             hasNextPage: ITEM_PER_PAGE * page < totalItem.count,
             hasPreviousPage: page > 1,
