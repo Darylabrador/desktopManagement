@@ -4,7 +4,6 @@ let btnToAddClient   = document.getElementById('btnAddClient');
 
 // form : search date
 let searchDateForm    = document.getElementById('searchDateForm');
-let dateInfo          = document.getElementById('date');
 let urlSearchDate     = "/dashboard";
 
 // form : add desktop
@@ -31,7 +30,7 @@ let urlCreateUser     = "/dashboard/client/add";
 
 // form : add assign
 let assignClientForm  = document.getElementById('assignClientForm');
-let currentDate       = document.getElementById('currentDate');
+let currentDate       = document.getElementById('currentDateInterface');
 let assignHourAdd     = document.getElementById('assignHourAdd');
 let assignDesktopAdd  = document.getElementById('assignDesktopAdd');
 let messageAdd        = document.getElementById('messageAdd');
@@ -335,7 +334,6 @@ assignClientForm.addEventListener('submit', evt => {
             if (request.status === 200) {
                 let reponse = request.response;
                 if (reponse.success) {
-                    displayMessageNode(flashMessage, 'success', reponse.message);
                     $('#modalAddAssign').modal('toggle');
                     assignClientForm.reset();
                     localStorage.setItem('message', reponse.message);
